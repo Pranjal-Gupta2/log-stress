@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: very-important
+  namespace: logstress
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      podname: very-important
+  template:
+    metadata:
+      labels:
+        podname: very-important
+        type: logstress
+    spec:
+      containers:
+      - name: heavy-stress
+        image: quay.io/openshift-logging/cluster-logging-load-client:latest
+        args:
+          - generate 
+          - --log-lines-rate=50
+          - --source=synthetic
